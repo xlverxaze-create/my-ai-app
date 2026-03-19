@@ -22,7 +22,6 @@
             outputVideo.style.display = "none";
 
             try {
-                // မင်းရဲ့ Render URL (https://my-ai-app-c8vb.onrender.com/generate) နဲ့ ချိတ်ထားတာပါ
                 let res = await fetch("https://my-ai-app-c8vb.onrender.com/generate", {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
@@ -34,6 +33,14 @@
                 outputVideo.style.display = "block";
                 loading.style.display = "none";
                 outputVideo.play();
+            } catch (error) {
+                alert("Error ဖြစ်သွားတယ်ဗျာ!");
+                loading.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
             } catch (error) {
                 alert("Error ဖြစ်သွားတယ်ဗျာ၊ Backend Link မရသေးတာ ဖြစ်နိုင်ပါတယ်!");
                 loading.style.display = "none";
