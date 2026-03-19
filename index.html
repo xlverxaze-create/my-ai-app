@@ -1,15 +1,43 @@
 <!DOCTYPE html>
 <html>
-<head><title>AI Video App</title></head>
-<body style="text-align: center; padding: 50px; font-family: sans-serif;">
-    <h2>AI Video Maker</h2>
-    <input id="story" type="text" placeholder="ဇာတ်လမ်းရိုက်ပါ..." style="padding: 10px;">
-    <button onclick="generateVideo()" style="padding: 10px;">Generate</button>
+<head><title>AI Video Maker</title></head>
+<body style="text-align: center; padding: 50px; font-family: sans-serif; background-color: #f4f4f4;">
+    <h2>AI Video Maker (Demo)</h2>
+    <p>ဇာတ်လမ်းတစ်ကြောင်း ရိုက်ထည့်ကြည့်ပါ</p>
+    <input id="story" type="text" placeholder="Once upon a time..." style="padding: 10px; width: 250px; border-radius: 5px; border: 1px solid #ccc;">
+    <button onclick="generateVideo()" style="padding: 10px 20px; cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 5px;">Generate</button>
     <br><br>
-    <video id="output" controls width="350" style="display:none;"></video>
+    <div id="loading" style="display:none; color: blue;">AI အလုပ်လုပ်နေပါတယ်... ခဏစောင့်ပါ...</div>
+    <video id="output" controls width="350" style="display:none; margin: 0 auto; border: 2px solid #333; border-radius: 10px;"></video>
+
     <script>
         async function generateVideo() {
-            alert("မကြာခင် Backend နဲ့ ချိတ်ပေးပါတော့မယ်!");
+            let storyText = document.getElementById("story").value;
+            let outputVideo = document.getElementById("output");
+            let loading = document.getElementById("loading");
+
+            if(!storyText) return alert("ဇာတ်လမ်းအရင်ရိုက်ပါ!");
+
+            loading.style.display = "block";
+            outputVideo.style.display = "none";
+
+            try {
+                // မင်းရဲ့ Render URL (https://my-ai-app-c8vb.onrender.com/generate) နဲ့ ချိတ်ထားတာပါ
+                let res = await fetch("https://my-ai-app-c8vb.onrender.com/generate", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({story: storyText})
+                });
+
+                let data = await res.json();
+                outputVideo.src = data.video;
+                outputVideo.style.display = "block";
+                loading.style.display = "none";
+                outputVideo.play();
+            } catch (error) {
+                alert("Error ဖြစ်သွားတယ်ဗျာ၊ Backend Link မရသေးတာ ဖြစ်နိုင်ပါတယ်!");
+                loading.style.display = "none";
+            }
         }
     </script>
 </body>
